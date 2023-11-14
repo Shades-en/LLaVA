@@ -111,13 +111,15 @@ def eval_model(args):
     keywords = [stop_str]
     stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
 
+    print(args)
+
     with torch.inference_mode():
         output_ids = model.generate(
             input_ids,
             images=images_tensor,
             do_sample=True if args.temperature > 0 else False,
             temperature=args.temperature,
-            top_p=args.top_p,
+            # top_p=args.top_p,
             num_beams=args.num_beams,
             max_new_tokens=args.max_new_tokens,
             use_cache=True,
