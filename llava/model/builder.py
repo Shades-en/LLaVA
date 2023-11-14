@@ -92,7 +92,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
             else:
                 tokenizer = AutoTokenizer.from_pretrained(model_base, use_fast=False)
                 cfg_pretrained = AutoConfig.from_pretrained(model_path)
-                model = LlavaLlamaForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=cfg_pretrained, offload_folder = offload_folder, **kwargs)
+                model = LlavaLlamaForCausalLM.from_pretrained(model_base, low_cpu_mem_usage=True, config=cfg_pretrained, **kwargs)
 
             mm_projector_weights = torch.load(os.path.join(model_path, 'mm_projector.bin'), map_location='cpu')
             mm_projector_weights = {k: v.to(torch.float16) for k, v in mm_projector_weights.items()}
@@ -103,7 +103,7 @@ def load_pretrained_model(model_path, model_base, model_name, load_8bit=False, l
                 model = LlavaMPTForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
             else:
                 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
-                model = LlavaLlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, **kwargs)
+                model = LlavaLlamaForCausalLM.from_pretrained(model_path, low_cpu_mem_usage=True, offload_folder = offload_folder, **kwargs)
     else:
         # Load language model
         if model_base is not None:
